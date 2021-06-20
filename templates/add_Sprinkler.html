@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD SPRINKLER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href='/static/styles/style_add_sprinkler.css'>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+        <i class="fas fa-bars" id="sidebar_btn"></i>
+    </label>
+    <!-----header begins----->
+    <header>
+        <div class="header">
+            <h3>SMART <span> WATERING SYSTEM</span></h3>
+        </div>
+    </header>
+    <!-----header ends----->
+
+    <!-----sidebar begins----->
+    <div class="sidebar">
+        <center>
+            <h4>MAIN MENU</h4>
+        </center>
+        <a href="/"><i class="fas fa-users"></i><span>Dashboard</span></a>
+        <a href="/add_sprinkler"><i class="fas fa-plus"></i><span>Add Sprinkler</span></a>
+        <a href="/set_time"><i class="fas fa-clock"></i><span>Timer Mode</span></a>
+        <a href="/history"><i class="fas fa-desktop"></i><span>History</span></a>
+    </div>
+    <!-----sidebar ends----->
+    <!-----page content begins----->
+    <div class="content">
+      <div class="container">
+        <div class="title">Add New Sprinkler</div>
+      
+        <form action="#">
+            <div class="sprinkler_details">
+                <div class="input_box">
+                    <span class="details">Sprinkler Name</span>
+                    <input type="text" id="sprinklers_name" placeholder="Enter Sprinkler's Name">
+                
+                </div>
+                <div class="input_box">
+                    <span class="details">Sprinkler Location</span>
+                    <input type="text" id="sprinklers_location" placeholder="Enter Sprinkler's Location">
+                
+                </div> 
+                
+                <div class="input_box">
+                    <span class="details">Sprinkler ID</span>
+                    <input type="text" id="sprinklers_id" placeholder="Enter Sprinkler's ID">
+                
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="ADD">
+            </div>
+        </form>
+    </div>
+    </div>        
+    <!-----page content ends----->
+    <script type="text/javascript" src="static/styles/info_scripts.js"></script>
+</body>
+</html>

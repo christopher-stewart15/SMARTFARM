@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SET TIMER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel='stylesheet' type='text/css' href='/static/styles/set_time.css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label_1 for="check">
+        <i class="fas fa-bars" id="sidebar_btn"></i>
+    </label_1>
+    <!-----header begins----->
+    <header>
+        <div class="header">
+            <h3>SMART <span> WATERING SYSTEM</span></h3>
+        </div>
+    </header>
+    <!-----header ends----->
+
+    <!-----sidebar begins----->
+    <div class="sidebar">
+        <center>
+            <h4>MAIN MENU</h4>
+        </center>
+        <a href="/"><i class="fas fa-users"></i><span>Dashboard</span></a>
+        <a href="/add_Sprinkler"><i class="fas fa-plus"></i><span>Add Sprinkler</span></a>
+        <a href="/set_time"><i class="fas fa-clock"></i><span>Timer Mode </span></a>
+        <a href="/history"><i class="fas fa-desktop"></i><span>History</span></a>
+    </div>
+    <!-----sidebar ends----->
+    <!-----page content begins----->
+      <div class="content">
+          <div class = "container">
+
+          <h2>SET SPRINKLER TIME</h2>
+          <h2 id='clock'></h2>
+        <div class ="alarm-container">
+			<h3>Set Alarm Time</h3>
+				<label>
+					<div>
+					<select id='alarmhrs' ></select>
+					</div>
+				</label>
+				<label>
+					<div>
+					<select id='alarmmins' ></select>
+					</div>
+				</label>
+				<label>
+					<div>
+					<select id='alarmsecs' ></select>
+					</div>
+				</label>
+				<label>
+					<div>
+						<select id="ampm">
+							<option value="AM">AM</option>
+							<option value="PM">PM</option>
+						</select>
+					</div>
+				</label>
+				</div>
+                <div id='buttonHolder'>
+                    <div>
+                        <button  id='clearButton' onClick='alarmClear()'>RESET TIME</button>
+                    </div>
+                    <div>
+                        <button  id='setButton' onClick='alarmSet()'>USE TIMER MODE</button>
+                    </div>
+                    
+                </div>
+		</div>
+
+	
+       
+        
+      </div>
+      
+      </body>
+    <!-----page content ends----->
+
+		<script type='text/javascript' src="static/styles/script_clock.js"></script>
+	</body>
+</html>
