@@ -90,39 +90,39 @@ async function displaySprinklerData(){
     let sprinklers = await getSprinklerData();  
     console.log(sprinklers);
 
-    await sprinklers.forEach(sprinklers => {
+    sprinklers.forEach(sprinklers => {
         console.log(sprinklers.sprinklers__id);
-        getSprinklerData(sprinklers.sprinklers__id).then(res => {
-            var content = document.querySelector(".content");
-            console.log(res);
-            content.append(createSprinklerCards(sprinklers, res));
-        });        
+        // getSprinklerData(sprinklers.sprinklers__id).then(res => {
+        //     var content = document.querySelector(".content");
+        //     console.log(res);
+            content.append(createSprinklerCards(sprinklers));
+        // });        
     });
-    // Send delete request if delete button is pressed
-    var deleteButtons = await document.querySelectorAll(".delete");
-    await deleteButtons.forEach(button => {
-        button.addEventListener("click", function(){
+ // Send delete request if delete button is pressed
+ var deleteButtons = document.querySelectorAll(".delete");
+ deleteButtons.forEach(button => {
+     button.addEventListener("click", function(){
 
-            // Send delete request to server
-            console.log("DELETE "+ button.id);
-            fetch(sprinklerPath +"/"+ button.id, {
-                method: "DELETE",
-                headers: {
-                    "Content-type": "application/json",
-                },
-            })
-            // .then(function(){
-            //     displaySprinklerData();
-            // })
-            
-        });
-    });
+         // Send delete request to server
+         console.log("DELETE "+ button.id);
+         fetch(sprinklerPath +"/"+ button.id, {
+             method: "DELETE",
+             headers: {
+                 "Content-type": "application/json",
+             },
+         })
+         .then(function(){
+             displaySprinklerData();
+         })
+         
+     });
+ });
 }
 
 window.onload = function(){
     displaySprinklerData();
 
-        
+   
 
         // Redirect user to the page where they can view a sprinkler_s data in detail
         var sprinkler_img = document.querySelectorAll("img");

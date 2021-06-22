@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>History</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href='/static/styles/style_history.css'>
+    <link rel="stylesheet" href='/static/styles/style_weather.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
 </head>
@@ -31,67 +31,25 @@
         <a href="/"><i class="fas fa-users"></i><span>Dashboard</span></a>
         <a href="/add_Sprinkler"><i class="fas fa-plus"></i><span>Add Sprinkler</span></a>
         <a href="/set_time"><i class="fas fa-clock"></i><span>Timer Mode </span></a>
-        <a href="/history"><i class="fas fa-desktop"></i><span>History</span></a>
+        <a href="/weather"><i class="fas fa-cloud-sun-rain"></i><span>Weather Data</span></a>
     </div>
     <!-----sidebar ends----->
     <!-----page content begins----->
       <div class="content">
-        <h2>SPRINKLER STATUS HISTORY</h2>
-      
-        <table>
-          <tr>
-            <th>Sprinkler</th>
-            <th>Status</th>
-            <th>Time</th>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr><tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr><tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr><tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
+        <h2> CURRENT WEATHER PREDICTION</h2>
+
+         <!-- <div class="Weather_data">
+
+          <div class="RAIN"><span>Raining Day: </span><span>Sprinkler 1</span></div>
+          <div class="SUN"><span>Sunny Day:</span><span>Pepper Farm</span></div>     
+
+        </div>
         
-      </div>
+        
+      </div> -->
       
       </body>
     <!-----page content ends----->
-    <script type="text/javascript" src=""></script>
+    <script type="text/javascript" src="static/styles/scripts_weather.js"></script>
 </body>
 </html>

@@ -7,6 +7,13 @@ from flask_cors import CORS
 from json import loads
 from pytz import datetime
 import pytz
+import pyowm 
+
+def first8(s):
+    return s[:8]
+
+def specTime(s):
+    return s[11:19]
 
 
 app = Flask(__name__)
@@ -17,6 +24,13 @@ mongo_uri = "mongodb+srv://nashhq:N.hamilton@cluster0.7pkmk.mongodb.net/SWS?ssl=
 app.config["MONGO_URI"] = mongo_uri
 mongo = PyMongo(app)
 
+APIKEY="2bb5d6bcd8576573247f90e6d1667307"                  #your API Key here as string
+OpenWMap=pyowm.OWM(APIKEY)                   # Use API key to get data
+
+Weatherforecast = OpenWMap.three_hours_forecast("Kingston") # give the city where you need to forecast
+
+
+
 class SoilValidation(Schema):
     moisture = fields.Integer(required = True)
     sensor_id = fields.Integer(required = True)
@@ -25,6 +39,11 @@ class SprinklerSchema(Schema):
     sprinklers_name = fields.String(required=True)
     sprinklers_location  = fields.String(required=True)
     sprinklers_id = fields.String(required=True)
+
+class WeatherPrediction(Schema):
+    rain_data = fields.Boolean(required = True)
+    sun_data = fields.Boolean(required = True)
+    Date=fields.String(Required = True)
 
 
 @app.route("/")
@@ -37,10 +56,36 @@ def add_sprinkler():
     
     return render_template ('add_Sprinkler.html')
 
-@app.route("/history")
-def history():
+@app.route("/weather")
+
+def data_weather():
+    tVar = datetime.datetime.now(tz=pytz.timezone('America/Jamaica'))
+    tVartoString = tVar.isoformat()
+    spec= specTime(tVartoString)
+    day = first8(tVartoString)
+    time_second= "8:30:00+00"
+    time = day + "22 " +time_second
+    rain=Weatherforecast.will_be_rainy_at(time) # forecast rain
+    sun=Weatherforecast.will_be_sunny_at(time) # forecast sun
+
+    # print("There will be rain :",rain) # print details
+    # print("There will be sun :",sun) #print details
+    # print(day + "22 "+time_second) 
     
-    return render_template ('history.html')
+    database = {
+        "rain_data" : rain,
+        "sun_data" : sun,
+        "Date": day + "22 ("+ spec +")"
+    }
+  
+    try:
+        # print(database)
+        weatherTemp = WeatherPrediction().load(database)
+        mongo.db.weathers.insert_one(weatherTemp)
+
+    except ValidationError as ve:
+        return ve.messages, 400
+    return render_template ('weather.html')
 
 @app.route("/set_time")
 def set_time():
@@ -52,7 +97,15 @@ def individual():
     
     return render_template ('individual_info.html',)
 
+    
+###############################################################################
+## Weather Prediction  ROUTES
 
+@app.route("/weathers") 
+def get_weather_data():
+    weather_data = mongo.db.weathers.find().sort([('Date', -1)]).limit(1)
+    
+    return jsonify(loads(dumps(weather_data))) 
 
     
 ###############################################################################
@@ -79,7 +132,7 @@ def data_post():
         print(database)
         sensorTemp = SoilValidation().load(database)
         mongo.db.soil_moisture.insert_one(sensorTemp)
-        return {"success": "true","msg": "Data Saved In Database Successfully", "Date": tVartoString}
+        # return {"success": "true","msg": "Data Saved In Database Successfully", "Date": tVartoString}
 
     except ValidationError as ve:
         return ve.messages, 400
