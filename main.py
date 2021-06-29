@@ -29,7 +29,9 @@ OpenWMap=pyowm.OWM(APIKEY)                   # Use API key to get data
 
 Weatherforecast = OpenWMap.three_hours_forecast("Kingston") # give the city where you need to forecast
 
-
+class timeValidation(Schema):
+    time = fields.String(required = True)
+    
 
 class SoilValidation(Schema):
     moisture = fields.Integer(required = True)
@@ -64,7 +66,7 @@ def data_weather():
     spec= specTime(tVartoString)
     day = first8(tVartoString)
     time_second= "8:30:00+00"
-    time = day + "22 " +time_second
+    time = day + "26 " +time_second
     rain=Weatherforecast.will_be_rainy_at(time) # forecast rain
     sun=Weatherforecast.will_be_sunny_at(time) # forecast sun
 
@@ -75,7 +77,7 @@ def data_weather():
     database = {
         "rain_data" : rain,
         "sun_data" : sun,
-        "Date": day + "22 ("+ spec +")"
+        "Date": day + "26 ("+ spec +")"
     }
   
     try:
@@ -99,13 +101,57 @@ def individual():
 
     
 ###############################################################################
-## Weather Prediction  ROUTES
+## ADHOC  ROUTES
 
 @app.route("/weathers") 
 def get_weather_data():
-    weather_data = mongo.db.weathers.find().sort([('Date', -1)]).limit(1)
+    weather_data = mongo.db.weathers.find({}, {'_id': False, 'Date':False}).sort([('Date', -1)]).limit(1)
     
     return jsonify(loads(dumps(weather_data))) 
+
+@app.route("/time") 
+def get_time_data():
+    time = mongo.db.times.find({}, {'_id': False}).sort([('time', -1)]).limit(1)
+    
+    return jsonify(loads(dumps(time))) 
+
+@app.route("/time", methods=["POST"])
+def post_time_data():
+    
+    print("TIME ADDED")
+    try:
+        time = request.json["time"]
+        
+
+        jsonBody = {
+            "time": time
+            
+        }
+
+        print(jsonBody)
+
+        time = timeValidation().load(jsonBody)
+        mongo.db.times.insert_one(time)
+
+        return{
+            "success": True,
+            "message": "Time Added Successfully"
+        }
+    except ValidationError as e:
+        return e.messages, 400
+
+
+@app.route("/esp") 
+def esp_data():
+    weather_data = mongo.db.weathers.find({}, {'_id': False, 'Date': False}).sort([('Date', -1)]).limit(1)
+    sensor_reading = mongo.db.soil_moisture.find({}, {'_id': False}).sort([('Date', -1)]).limit(1)
+    time = mongo.db.times.find({}, {'_id': False}).sort([('time', -1)]).limit(1)
+    result = {}
+    result["weather"] = weather_data
+    result["Sensor"] = sensor_reading
+    result["Time"] = time
+    print(result)
+    return jsonify(loads(dumps(result))) 
 
     
 ###############################################################################
@@ -132,7 +178,7 @@ def data_post():
         print(database)
         sensorTemp = SoilValidation().load(database)
         mongo.db.soil_moisture.insert_one(sensorTemp)
-        # return {"success": "true","msg": "Data Saved In Database Successfully", "Date": tVartoString}
+        return {"success": "true","msg": "Data Saved In Database Successfully", "Date": tVartoString}
 
     except ValidationError as ve:
         return ve.messages, 400
@@ -227,7 +273,7 @@ def sprinkler_methods(id):
 
 if __name__ == "__main__":
     app.run(
-        debug=False, host= "0.0.0.0",
+        debug=True, host= "0.0.0.0",
         port = 5500
     )
    

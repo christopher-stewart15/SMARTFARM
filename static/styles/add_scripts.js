@@ -1,5 +1,5 @@
 // URL of the server 
-var serverURL = "http://10.10.4.124:5500";
+var serverURL = "http://10.10.22.218:5500";
 
 let button = document.querySelector(".button");
 button.addEventListener("click", function(event){

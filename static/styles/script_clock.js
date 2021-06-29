@@ -1,4 +1,4 @@
-
+var serverURL = "http://10.10.22.218:5500";
 
 var sound = new Audio("https://www.freespecialeffects.co.uk/soundfx/sirens/schoolbell.wav");
 sound.loop = true;
@@ -9,7 +9,7 @@ var h2 = document.getElementById('clock');
 var currentTime = setInterval(function(){
 var date = new Date();
 
-var hours = (12 - (date.getHours()));
+var hours = (0 - (date.getHours()));
 
 // var hours = date.getHours();
 
@@ -97,8 +97,27 @@ var selectedMin = min.options[min.selectedIndex].value;
 var selectedSec = sec.options[sec.selectedIndex].value;
 var selectedAP = ap.options[ap.selectedIndex].value;
 
-var alarmTime = addZero(selectedHour) + ":" + addZero(selectedMin) + ":" + addZero(selectedSec) + selectedAP;
-console.log('SPRINKLER TIME: ' + alarmTime);
+var alarmTime = addZero(selectedHour) + ":" + addZero(selectedMin) + ":" + addZero(selectedSec) + "-" + selectedAP;
+console.log('SPRINKLER TIME:' + alarmTime);
+
+//json body for post
+jsonBody = {
+    "time": alarmTime
+    };
+
+// Send the POST request 
+fetch(serverURL + "/time", {
+    method: "POST",
+   body: JSON.stringify(jsonBody),
+   headers:{
+            "Content-type": "application/json",
+       },
+   })
+.then((res) => res.json)
+.then((json) => console.log(json));
+
+
+
 
 document.getElementById('alarmhrs').disabled = true;
 document.getElementById('alarmmins').disabled = true;
@@ -138,13 +157,13 @@ hours = 12;
 hours = hours;
 }
 
-var currentTime = h2.textContent = addZero(hours) + ":" + addZero(minutes) + ":" + addZero(seconds) + "" + ampm;
+var currentTime = h2.textContent = addZero(hours) + ":" + addZero(minutes) + ":" + addZero(seconds) + " " + ampm;
 
 
 if (alarmTime == currentTime) {
 
-    console.log('NOW SPRINKLING');
-sound.play();
+ console.log('NOW SPRINKLING');
+ sound.play();
 }
 
 },1000);
